@@ -10,7 +10,7 @@ DEFAULT_TEXT = """Google was founded in September 1998 by Larry Page and Sergey 
 
 spacy_model = "en_core_web_sm"
 
-st.title("My cool app")
+st.title("NER using spaCy")
 text = st.text_area("Text to analyze", DEFAULT_TEXT, height=200)
 doc = spacy_streamlit.process_text(spacy_model, text)
 
