@@ -14,9 +14,13 @@ st.title("NER using spaCy")
 text = st.text_area("Text to analyze", DEFAULT_TEXT, height=200)
 doc = spacy_streamlit.process_text(spacy_model, text)
 
+ner_labels = ["CARDINAL", "DATE", "EVENT", "FAC", "GPE", "LANGUAGE", 
+              "LAW", "LOC", "MONEY", "NORP", "ORDINAL", "ORG", "PERCENT", 
+              "PERSON", "PRODUCT", "QUANTITY", "TIME", "WORK_OF_ART"]
+
 spacy_streamlit.visualize_ner(
     doc,
-    labels=["PERSON", "DATE", "GPE"],
+    labels=ner_labels,
     show_table=False,
     title="Persons, dates and locations",
 )
