@@ -12,6 +12,10 @@ DEFAULT_TEXT = """Google was founded in September 1998 by Larry Page and Sergey 
 
 st.title("NER using spaCy")
 
+# key = st.text_input("Paste your wandb API key here https://wandb.ai/authorize")
+# wandb.login()
+
+wandb.login(anonymous="must")
 
 artifact = wandb.Api().artifact('capecape/st30/spacy_model:v0', type='model')
 model = artifact.download()
