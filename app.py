@@ -30,7 +30,7 @@ def list_project_models(artifacts_type):
     return models
 
 models_names = list_project_models(artifacts_type)
-model_name = st.selectbox("Select your spaCy model (logged to as wandb.Artifact)", models_names)
+model_name = st.selectbox("Select your spaCy model (logged as wandb.Artifact)", models_names)
 
 # download the model from wandb
 model = api.artifact(f'{ENTITY}/{PROJECT}/{model_name}', type='model')
