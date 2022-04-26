@@ -19,7 +19,7 @@ wandb.login(anonymous="must")
 ENTITY = "capecape"
 PROJECT = "st30"
 
-api = wandb.Api(entity=ENTITY)
+api = wandb.Api()
 artifacts_type = api.artifact_type("model", f'{ENTITY}/{PROJECT}')
 
 def list_project_models(artifacts_type):
