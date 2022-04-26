@@ -15,18 +15,26 @@ st.title("NER using spaCy")
 # wandb.login()
 
 wandb.login(anonymous="must")
-_models = ["en_core_web_sm", "en_core_web_md"]
 
-models = []
-for model in _models:
-    artifact = wandb.Api().artifact(f'capecape/st30/{model}:v0', type='model')
-    models.append(artifact.download())
+ENTITY = "capecape"
+PROJECT = "st30"
 
-model = st.selectbox("Select your spaCy model artifact", models)
+api = wandb.Api(entity=ENTITY)
+artifacts_type = api.artifact_type("model", f'{ENTITY}/{PROJECT}')
 
-artifact = wandb.Api().artifact('capecape/st30/spacy_model:v0', type='model')
-model = artifact.download()
+def list_project_models(artifacts_type):
+    models = []
+    for collection in artifacts_type.collections():
+        for artifact in collection.versions():
+            models.append(artifact.name)
+    return models
 
+models_names = list_project_models(artifacts_type)
+model_name = st.selectbox("Select your spaCy model (logged to as wandb.Artifact)", models_names)
+
+# download the model from wandb
+model = api.artifact(f'{ENTITY}/{PROJECT}/{model_name}', type='model')
+model = model.download()
 
 text = st.text_area("Text to analyze", DEFAULT_TEXT, height=200)
 doc = spacy_streamlit.process_text(model, text)
