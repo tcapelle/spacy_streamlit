@@ -9,7 +9,8 @@ import streamlit as st
 DEFAULT_TEXT = """Google was founded in September 1998 by Larry Page and Sergey Brin while they were Ph.D. students at Stanford University in California. Together they own about 14 percent of its shares and control 56 percent of the stockholder voting power through supervoting stock. They incorporated Google as a California privately held company on September 4, 1998, in California. Google was then reincorporated in Delaware on October 22, 2002."""
 
 
-st.title("NER using spaCy")
+st.title("Visualizing NER using spaCy and Weights and Biases")
+st.image("wide.png")
 
 # key = st.text_input("Paste your wandb API key here https://wandb.ai/authorize")
 # wandb.login()
@@ -19,8 +20,14 @@ wandb.login(anonymous="must")
 ENTITY = "capecape"
 PROJECT = "st30"
 
+ENTITY_PROJECT = ENTITY+"/"+PROJECT
+
+st.subheader("Setup you W&B project")
+ENTITY_PROJECT = st.text_input("Input your wandb project path (entity/project)", ENTITY_PROJECT)
+
+
 api = wandb.Api()
-artifacts_type = api.artifact_type("model", f'{ENTITY}/{PROJECT}')
+artifacts_type = api.artifact_type("model", f'{ENTITY_PROJECT}')
 
 def list_project_models(artifacts_type):
     models = []
@@ -33,10 +40,10 @@ models_names = list_project_models(artifacts_type)
 model_name = st.selectbox("Select your spaCy model (logged as wandb.Artifact)", models_names)
 
 # download the model from wandb
-model = api.artifact(f'{ENTITY}/{PROJECT}/{model_name}', type='model')
+model = api.artifact(f'{ENTITY_PROJECT}/{model_name}', type='model')
 model = model.download()
 
-text = st.text_area("Text to analyze", DEFAULT_TEXT, height=200)
+text = st.text_area("Input some text to analyze", DEFAULT_TEXT, height=200)
 doc = spacy_streamlit.process_text(model, text)
 
 ner_labels = ["CARDINAL", "DATE", "EVENT", "FAC", "GPE", "LANGUAGE", 
@@ -49,4 +56,4 @@ spacy_streamlit.visualize_ner(
     show_table=False,
     title="Persons, dates and locations",
 )
-st.text(f"Analyzed using spaCy model {model}")
+st.text(f"Analyzed using spaCy model: {ENTITY_PROJECT}/{model[2:]}")
