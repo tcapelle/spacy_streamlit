@@ -3,6 +3,7 @@ Example using the components provided by spacy-streamlit in an existing app.
 Prerequisites:
 python -m spacy download en_core_web_sm
 """
+import os
 import spacy_streamlit, wandb
 import streamlit as st
 
@@ -12,7 +13,7 @@ DEFAULT_TEXT = """Google was founded in September 1998 by Larry Page and Sergey 
 st.title("Visualizing NER using spaCy and Weights and Biases")
 st.image("wide.png")
 
-wandb.login(key=st.secrets.WANDB_API_KEY)
+wandb.login()
 api = wandb.Api()
 
 # wandb.login(anonymous="must")
@@ -25,8 +26,6 @@ ENTITY_PROJECT = ENTITY+"/"+PROJECT
 st.subheader("Setup you W&B project")
 ENTITY_PROJECT = st.text_input("Input your wandb project path (entity/project)", ENTITY_PROJECT)
 
-
-api = wandb.Api()
 artifacts_type = api.artifact_type("model", f'{ENTITY_PROJECT}')
 
 def list_project_models(artifacts_type):
