@@ -12,10 +12,10 @@ DEFAULT_TEXT = """Google was founded in September 1998 by Larry Page and Sergey 
 st.title("Visualizing NER using spaCy and Weights and Biases")
 st.image("wide.png")
 
-# key = st.text_input("Paste your wandb API key here https://wandb.ai/authorize")
-# wandb.login()
+wandb.login(key=st.secrets.WANDB_API_KEY)
+api = wandb.Api()
 
-wandb.login(anonymous="must")
+# wandb.login(anonymous="must")
 
 ENTITY = "capecape"
 PROJECT = "st30"
